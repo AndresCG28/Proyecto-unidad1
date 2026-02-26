@@ -594,3 +594,43 @@ select:focus {
         padding: 1.5rem;
     }
 }
+
+/* Details Modal Styles */
+.detail-item {
+    padding: 1.2rem;
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+}
+
+.detail-prio {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.detail-desc {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    opacity: 0.9;
+}

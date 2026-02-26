@@ -55,7 +55,13 @@ function initCalendar() {
             right: 'dayGridMonth,timeGridWeek'
         },
         locale: 'es',
-        events: []
+        events: [],
+        dateClick: function (info) {
+            showDayDetails(info.dateStr);
+        },
+        eventClick: function (info) {
+            showTaskDetails(info.event.id);
+        }
     });
 }
 
@@ -63,10 +69,15 @@ function refreshCalendar() {
     if (!calendar) return;
     calendar.removeAllEvents();
     const calendarEvents = tasks.map(t => ({
+        id: t.id,
         title: t.title,
         start: t.due_date || t.created_at,
-        backgroundColor: t.completed ? '#10b981' : '#6366f1',
-        allDay: true
+        backgroundColor: t.completed ? '#10b981' : (t.priority === 'Alta' ? '#ef4444' : '#6366f1'),
+        allDay: true,
+        extendedProps: {
+            description: t.description,
+            priority: t.priority
+        }
     }));
     calendar.addEventSource(calendarEvents);
 }
@@ -225,6 +236,57 @@ document.getElementById('edit-task-form').addEventListener('submit', async (e) =
         closeEditModal();
     }
 });
+
+// Details Modal Management
+function openDetailsModal(title, contentHtml) {
+    document.getElementById('details-title').textContent = title;
+    document.getElementById('details-body').innerHTML = contentHtml;
+    document.getElementById('details-modal').style.display = 'flex';
+}
+
+function closeDetailsModal() {
+    document.getElementById('details-modal').style.display = 'none';
+}
+
+function showTaskDetails(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    const contentHtml = `
+        <div class="detail-item">
+            <div class="detail-title">${task.title}</div>
+            <div style="margin-bottom: 1rem;">
+                <span class="detail-prio prio-${(task.priority || 'Baja').toLowerCase()}">${task.priority || 'Baja'}</span>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">
+                    <i class="fa-regular fa-calendar"></i> ${task.due_date || 'Sin fecha'}
+                </span>
+            </div>
+            <div class="detail-desc">${task.description || 'Sin descripción'}</div>
+        </div>
+    `;
+    openDetailsModal('Detalles de la Tarea', contentHtml);
+}
+
+function showDayDetails(dateStr) {
+    const dayTasks = tasks.filter(t => t.due_date === dateStr);
+
+    if (dayTasks.length === 0) {
+        showToast('No hay tareas para este día', 'info');
+        return;
+    }
+
+    const contentHtml = dayTasks.map(task => `
+        <div class="detail-item">
+            <div class="detail-title">${task.title}</div>
+            <div style="margin-bottom: 0.5rem;">
+                <span class="detail-prio prio-${(task.priority || 'Baja').toLowerCase()}">${task.priority || 'Baja'}</span>
+            </div>
+            <div class="detail-desc">${task.description || 'Sin descripción'}</div>
+        </div>
+    `).join('');
+
+    openDetailsModal(`Tareas para el ${dateStr}`, contentHtml);
+}
 
 // Avatar Management
 function updateStats() {
