@@ -86,7 +86,8 @@ label {
     color: var(--text-muted);
 }
 
-input {
+input,
+select {
     width: 100%;
     padding: 0.75rem 1rem;
     background: rgba(255, 255, 255, 0.05);
@@ -95,10 +96,35 @@ input {
     color: white;
     font-family: inherit;
     transition: all 0.3s ease;
+    outline: none;
 }
 
-input:focus {
-    outline: none;
+/* Fix para la visibilidad del dropdown */
+select option {
+    background-color: #0f172a;
+    /* Fondo muy oscuro para contraste */
+    color: white;
+    padding: 12px;
+}
+
+/* Colores de prioridad en el menú desplegable */
+option[value="Alta"] {
+    color: #f87171 !important;
+    font-weight: bold;
+}
+
+option[value="Media"] {
+    color: #fbbf24 !important;
+    font-weight: bold;
+}
+
+option[value="Baja"] {
+    color: #34d399 !important;
+    font-weight: bold;
+}
+
+input:focus,
+select:focus {
     border-color: var(--primary);
     background: rgba(255, 255, 255, 0.1);
 }
@@ -293,6 +319,7 @@ input:focus {
     align-items: center;
     gap: 1.5rem;
     transition: all 0.3s ease;
+    animation: taskIn 0.4s ease-out forwards;
 }
 
 .task-item:hover {
@@ -343,6 +370,179 @@ input:focus {
     color: var(--danger);
 }
 
+/* --- PREMIUM UI EXTENSIONS --- */
+
+/* Avatar & Profile */
+.avatar-circle {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: white;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    border: 2px solid var(--glass-border);
+    transition: all 0.3s ease;
+}
+
+.avatar-circle:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+}
+
+/* Modal Side-by-Side Layout */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 650px;
+    padding: 3rem;
+}
+
+.avatar-selector-layout {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    margin: 2rem 0;
+}
+
+.current-avatar-preview {
+    text-align: center;
+    flex: 1;
+}
+
+.current-avatar-preview .preview-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.current-avatar-preview i {
+    font-size: 5rem;
+    color: var(--accent);
+    filter: drop-shadow(0 0 15px var(--accent));
+}
+
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    flex: 2;
+}
+
+.avatar-option {
+    font-size: 1.8rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+}
+
+.avatar-option:hover {
+    background: var(--primary);
+    transform: translateY(-5px) scale(1.1);
+    color: white;
+}
+
+/* Toast System */
+#toast-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.toast {
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    animation: toastSlide 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes toastSlide {
+    from {
+        transform: translateX(150%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast-success {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.toast-error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.toast-info {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+/* Task Priority Labels - High Contrast */
+.prio-tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.prio-alta {
+    background: #ef4444 !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.prio-media {
+    background: #f59e0b !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.prio-baja {
+    background: #10b981 !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
 /* Animations */
 @keyframes fadeIn {
     from {
@@ -353,6 +553,18 @@ input:focus {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes taskIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
 
@@ -369,5 +581,16 @@ input:focus {
 
     .task-controls {
         flex-direction: column;
+    }
+}
+
+@media (max-width: 600px) {
+    .avatar-selector-layout {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
     }
 }
