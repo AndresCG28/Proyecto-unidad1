@@ -197,6 +197,31 @@ function updateStats() {
     document.getElementById('stats-completed').textContent = tasks.filter(t => t.completed).length;
 }
 
+// Theme Management
+function toggleTheme() {
+    const isLight = document.body.classList.toggle('light-theme');
+    localStorage.setItem('remindify-theme', isLight ? 'light' : 'dark');
+    updateThemeIcon(isLight);
+}
+
+function loadTheme() {
+    const savedTheme = localStorage.getItem('remindify-theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        updateThemeIcon(true);
+    }
+}
+
+function updateThemeIcon(isLight) {
+    const icon = document.querySelector('#theme-toggle i');
+    if (icon) {
+        icon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+}
+
 // Search and Filter Listeners
 document.getElementById('task-search').addEventListener('input', renderTasks);
 document.getElementById('task-filter').addEventListener('change', renderTasks);
+
+// Load theme on startup
+loadTheme();

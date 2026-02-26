@@ -1,7 +1,7 @@
 :root {
     --primary: #6366f1;
     --primary-hover: #4f46e5;
-    --bg-dark: #0f172a;
+    --bg-main: radial-gradient(circle at top right, #1e1b4b, #0f172a);
     --card-bg: rgba(30, 41, 59, 0.7);
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
@@ -9,6 +9,14 @@
     --glass-border: rgba(255, 255, 255, 0.1);
     --success: #10b981;
     --danger: #ef4444;
+}
+
+body.light-theme {
+    --bg-main: radial-gradient(circle at top right, #f1f5f9, #e2e8f0);
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --glass-border: rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -19,10 +27,11 @@
 
 body {
     font-family: 'Outfit', sans-serif;
-    background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+    background: var(--bg-main);
     color: var(--text-main);
     min-height: 100vh;
     overflow-x: hidden;
+    transition: background 0.4s ease, color 0.4s ease;
 }
 
 .glass-morphism {
