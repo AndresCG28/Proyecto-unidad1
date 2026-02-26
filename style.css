@@ -585,6 +585,11 @@ select:focus {
     .task-controls {
         flex-direction: column;
     }
+
+    #add-task-form {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
 }
 
 @media (max-width: 600px) {
