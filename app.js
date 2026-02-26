@@ -254,7 +254,10 @@ function closeAvatarModal() {
 
 async function selectAvatar(iconName) {
     const avatarEl = document.getElementById('user-avatar');
+    const previewEl = document.getElementById('modal-avatar-preview');
+
     avatarEl.innerHTML = `<i class="fa-solid fa-${iconName}"></i>`;
+    if (previewEl) previewEl.innerHTML = `<i class="fa-solid fa-${iconName}"></i>`;
 
     // Save to Supabase User Metadata
     const { error } = await supabaseClient.auth.updateUser({
@@ -264,14 +267,16 @@ async function selectAvatar(iconName) {
     if (error) {
         showToast('Error al guardar avatar', 'error');
     } else {
-        showToast('Avatar actualizado', 'success');
-        closeAvatarModal();
+        showToast('¡Avatar actualizado!', 'success');
+        // No cerramos el modal inmediato para que vea el cambio a un lado
     }
 }
 
 function loadUserAvatar(user) {
     const avatarIcon = user.user_metadata?.avatar || 'user';
     document.getElementById('user-avatar').innerHTML = `<i class="fa-solid fa-${avatarIcon}"></i>`;
+    const previewEl = document.getElementById('modal-avatar-preview');
+    if (previewEl) previewEl.innerHTML = `<i class="fa-solid fa-${avatarIcon}"></i>`;
 }
 
 // Theme Management

@@ -199,21 +199,42 @@
     <!-- Avatar Modal -->
     <div id="avatar-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content glass-morphism">
-            <h3>Selecciona tu Avatar</h3>
-            <div class="avatar-grid">
-                <div class="avatar-option" onclick="selectAvatar('user')"><i class="fa-solid fa-user"></i></div>
-                <div class="avatar-option" onclick="selectAvatar('user-graduate')"><i
-                        class="fa-solid fa-user-graduate"></i></div>
-                <div class="avatar-option" onclick="selectAvatar('user-ninja')"><i class="fa-solid fa-user-ninja"></i>
+            <h2 style="margin-bottom: 0.5rem;">Personaliza tu Perfil</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Elige un avatar que te represente</p>
+
+            <div class="avatar-selector-layout">
+                <div class="current-avatar-preview">
+                    <div class="preview-label">Seleccionado</div>
+                    <div id="modal-avatar-preview">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
                 </div>
-                <div class="avatar-option" onclick="selectAvatar('user-astronaut')"><i
-                        class="fa-solid fa-user-astronaut"></i></div>
-                <div class="avatar-option" onclick="selectAvatar('user-tie')"><i class="fa-solid fa-user-tie"></i></div>
-                <div class="avatar-option" onclick="selectAvatar('robot')"><i class="fa-solid fa-robot"></i></div>
-                <div class="avatar-option" onclick="selectAvatar('cat')"><i class="fa-solid fa-cat"></i></div>
-                <div class="avatar-option" onclick="selectAvatar('ghost')"><i class="fa-solid fa-ghost"></i></div>
+
+                <div class="avatar-grid">
+                    <div class="avatar-option" onclick="selectAvatar('user')"><i class="fa-solid fa-user"></i></div>
+                    <div class="avatar-option" onclick="selectAvatar('user-graduate')"><i
+                            class="fa-solid fa-user-graduate"></i></div>
+                    <div class="avatar-option" onclick="selectAvatar('user-ninja')"><i
+                            class="fa-solid fa-user-ninja"></i></div>
+                    <div class="avatar-option" onclick="selectAvatar('user-astronaut')"><i
+                            class="fa-solid fa-user-astronaut"></i></div>
+                    <div class="avatar-option" onclick="selectAvatar('user-tie')"><i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div class="avatar-option" onclick="selectAvatar('robot')"><i class="fa-solid fa-robot"></i></div>
+                    <div class="avatar-option" onclick="selectAvatar('cat')"><i class="fa-solid fa-cat"></i></div>
+                    <div class="avatar-option" onclick="selectAvatar('ghost')"><i class="fa-solid fa-ghost"></i></div>
+                    <div class="avatar-option" onclick="selectAvatar('dragon')"><i class="fa-solid fa-dragon"></i></div>
+                    <div class="avatar-option" onclick="selectAvatar('hippo')"><i class="fa-solid fa-hippo"></i></div>
+                    <div class="avatar-option" onclick="selectAvatar('otter')"><i class="fa-solid fa-otter"></i></div>
+                    <div class="avatar-option" onclick="selectAvatar('dog')"><i class="fa-solid fa-dog"></i></div>
+                </div>
             </div>
-            <button class="btn btn-primary" onclick="closeAvatarModal()" style="margin-top: 1rem;">Cerrar</button>
+
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button class="btn btn-primary" onclick="closeAvatarModal()" style="max-width: 200px;">
+                    Guardar Cambios
+                </button>
+            </div>
         </div>
     </div>
 
