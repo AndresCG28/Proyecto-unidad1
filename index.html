@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remindify | Gestión de Tareas en la Nube</title>
+
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- FullCalendar CDN -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Auth Section -->
+        <div id="auth-container">
+            <div class="auth-card glass-morphism" id="login-form">
+                <h1>Remindify</h1>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Tu productividad, en la
+                    nube.</p>
+
+                <form id="login-form-inner">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="login-email" required placeholder="ejemplo@correo.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="login-password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión
+                    </button>
+                </form>
+
+                <div class="toggle-auth">
+                    ¿No tienes cuenta? <span onclick="toggleAuthForms()">Regístrate</span>
+                </div>
+            </div>
+
+            <div class="auth-card glass-morphism" id="signup-form" style="display: none;">
+                <h1>Crear Cuenta</h1>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Únete a la mejor gestión
+                    de tareas.</p>
+
+                <form id="signup-form-inner">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="signup-email" required placeholder="ejemplo@correo.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="signup-password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-user-plus"></i> Registrarse
+                    </button>
+                </form>
+
+                <div class="toggle-auth">
+                    ¿Ya tienes cuenta? <span onclick="toggleAuthForms()">Inicia Sesión</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="app-container">
+            <header class="dashboard-header">
+                <div class="brand">
+                    <h1 style="font-size: 2.5rem; font-weight: 700;">Remindify</h1>
+                    <p style="color: var(--accent);">Panel de Control</p>
+                </div>
+                <div class="user-profile">
+                    <span id="user-email-display" style="font-weight: 500;"></span>
+                    <button onclick="handleLogout()" class="logout-btn">
+                        <i class="fa-solid fa-power-off"></i> Salir
+                    </button>
+                </div>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card glass-morphism">
+                    <div class="value" id="stats-total">0</div>
+                    <div class="label">Total Tareas</div>
+                </div>
+                <div class="stat-card glass-morphism">
+                    <div class="value" id="stats-pending">0</div>
+                    <div class="label">Pendientes</div>
+                </div>
+                <div class="stat-card glass-morphism">
+                    <div class="value" id="stats-completed">0</div>
+                    <div class="label">Completadas</div>
+                </div>
+            </div>
+
+            <div class="tab-navigation">
+                <button class="tab-btn active" id="tab-tasks" onclick="switchTab('tasks')">
+                    <i class="fa-solid fa-list-check"></i> Lista de Tareas
+                </button>
+                <button class="tab-btn" id="tab-calendar" onclick="switchTab('calendar')">
+                    <i class="fa-solid fa-calendar-days"></i> Calendario
+                </button>
+            </div>
+
+            <div class="view-container" id="tasks-view">
+                <div class="task-form-area glass-morphism" style="padding: 2rem; margin-bottom: 3rem;">
+                    <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-plus-circle"></i> Nueva Tarea</h2>
+                    <form id="add-task-form"
+                        style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 1rem; align-items: end;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Título *</label>
+                            <input type="text" id="task-title" required placeholder="¿Qué necesitas hacer?">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Descripción</label>
+                            <input type="text" id="task-desc" placeholder="Detalles opcionales...">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Fecha Límite</label>
+                            <input type="date" id="task-date">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">
+                            Guardar
+                        </button>
+                    </form>
+                </div>
+
+                <div class="tasks-section">
+                    <div class="task-controls">
+                        <input type="text" id="task-search" class="search-input" placeholder="Buscar tareas...">
+                        <select id="task-filter" class="glass-morphism"
+                            style="padding: 0 1rem; border: 1px solid var(--glass-border); color: white; background: transparent;">
+                            <option value="all">Todas</option>
+                            <option value="pending">Pendientes</option>
+                            <option value="completed">Completadas</option>
+                        </select>
+                    </div>
+
+                    <div id="task-list" class="task-list">
+                        <!-- Tareas se cargarán aquí -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="view-container" id="calendar-view" style="display: none;">
+                <div class="glass-morphism" style="padding: 2rem;">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
