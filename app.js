@@ -162,14 +162,17 @@ function renderTasks() {
         <div class="task-item glass-morphism ${t.completed ? 'completed' : ''}" style="${t.completed ? 'opacity: 0.6;' : ''}">
             <input type="checkbox" class="task-checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask('${t.id}', ${t.completed})">
             <div class="task-content">
-                <div class="task-title" style="${t.completed ? 'text-decoration: line-through;' : ''}">${t.title}</div>
+                <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.4rem;">
+                    <span class="priority-tag prio-${(t.priority || 'Baja').toLowerCase()}">${t.priority || 'Baja'}</span>
+                    <div class="task-title" style="${t.completed ? 'text-decoration: line-through;' : ''}">${t.title}</div>
+                </div>
                 <div class="task-desc">
                     ${t.due_date ? `<i class="fa-regular fa-calendar-check"></i> ${t.due_date} | ` : ''}
                     ${t.description || ''}
                 </div>
             </div>
             <div class="task-actions">
-                <button class="action-btn" onclick="editTaskPrompt('${t.id}', '${t.title}', '${t.description}', '${t.due_date}')">
+                <button class="action-btn" onclick="editTaskPrompt('${t.id}', '${t.title}', '${t.description}', '${t.due_date}', '${t.priority}')">
                     <i class="fa-solid fa-pen"></i>
                 </button>
                 <button class="action-btn btn-delete" onclick="deleteTask('${t.id}')">
@@ -181,22 +184,28 @@ function renderTasks() {
 }
 
 // Edit Prompt
-async function editTaskPrompt(id, oldTitle, oldDesc, oldDate) {
+async function editTaskPrompt(id, oldTitle, oldDesc, oldDate, oldPrio) {
     const newTitle = prompt('Editar título:', oldTitle);
     if (newTitle === null) return;
     const newDesc = prompt('Editar descripción:', oldDesc === 'undefined' ? '' : oldDesc);
     const newDate = prompt('Editar fecha (AAAA-MM-DD):', oldDate === 'undefined' || !oldDate ? '' : oldDate);
+    const newPrio = prompt('Escoge prioridad (Baja, Media, Alta):', oldPrio === 'undefined' ? 'Media' : oldPrio);
 
     const { error } = await supabaseClient
         .from('tasks')
         .update({
             title: newTitle,
             description: newDesc,
-            due_date: newDate || null
+            due_date: newDate || null,
+            priority: newPrio || 'Baja'
         })
         .eq('id', id);
 
-    if (error) alert('Error al editar tarea: ' + error.message);
+    if (error) {
+        showToast('Error al editar', 'error');
+    } else {
+        showToast('Tarea actualizada', 'success');
+    }
 }
 
 // Stats & Progress
