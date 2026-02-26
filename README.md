@@ -43,6 +43,17 @@ cd <nombre-de-la-carpeta>
 ### 3. Ejecutar
 Dado que no usa Node.js, puedes simplemente abrir `index.html` en tu navegador o usar una extensión como "Live Server" en VS Code.
 
+## 🤖 Automatización de Commits
+
+He incluido un script que realiza commits automáticos cada vez que guardas un cambio local:
+
+1. Abre una terminal de **PowerShell** en la carpeta del proyecto.
+2. Ejecuta el script:
+   ```powershell
+   .\git-auto-commit.ps1
+   ```
+3. ¡Listo! Cualquier cambio que realices se guardará automáticamente en tu historial de Git.
+
 ## 🌐 Despliegue
 Puedes desplegar este proyecto en **Vercel** o **GitHub Pages** arrastrando los archivos o conectando tu repositorio. Asegúrate de que las credenciales de Supabase estén correctamente configuradas.
 
