@@ -172,7 +172,7 @@ function renderTasks() {
                 </div>
             </div>
             <div class="task-actions">
-                <button class="action-btn" onclick="editTaskPrompt('${t.id}', '${t.title}', '${t.description}', '${t.due_date}', '${t.priority}')">
+                <button class="action-btn" onclick="openEditModal('${t.id}', '${t.title}', '${t.description}', '${t.due_date}', '${t.priority}')">
                     <i class="fa-solid fa-pen"></i>
                 </button>
                 <button class="action-btn btn-delete" onclick="deleteTask('${t.id}')">
@@ -183,32 +183,50 @@ function renderTasks() {
     `).join('');
 }
 
-// Edit Prompt
-async function editTaskPrompt(id, oldTitle, oldDesc, oldDate, oldPrio) {
-    const newTitle = prompt('Editar título:', oldTitle);
-    if (newTitle === null) return;
-    const newDesc = prompt('Editar descripción:', oldDesc === 'undefined' ? '' : oldDesc);
-    const newDate = prompt('Editar fecha (AAAA-MM-DD):', oldDate === 'undefined' || !oldDate ? '' : oldDate);
-    const newPrio = prompt('Escoge prioridad (Baja, Media, Alta):', oldPrio === 'undefined' ? 'Media' : oldPrio);
+// Custom Edit Modal Management
+function openEditModal(id, title, desc, date, prio) {
+    document.getElementById('edit-task-id').value = id;
+    document.getElementById('edit-task-title').value = title;
+    document.getElementById('edit-task-desc').value = desc === 'undefined' ? '' : desc;
+    document.getElementById('edit-task-date').value = date === 'undefined' || !date ? '' : date;
+    document.getElementById('edit-task-priority').value = prio === 'undefined' ? 'Media' : prio;
+
+    document.getElementById('edit-modal').style.display = 'flex';
+}
+
+function closeEditModal() {
+    document.getElementById('edit-modal').style.display = 'none';
+}
+
+// Edit Form Listener
+document.getElementById('edit-task-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const id = document.getElementById('edit-task-id').value;
+    const title = document.getElementById('edit-task-title').value;
+    const description = document.getElementById('edit-task-desc').value;
+    const priority = document.getElementById('edit-task-priority').value;
+    const due_date = document.getElementById('edit-task-date').value;
 
     const { error } = await supabaseClient
         .from('tasks')
         .update({
-            title: newTitle,
-            description: newDesc,
-            due_date: newDate || null,
-            priority: newPrio || 'Baja'
+            title,
+            description,
+            priority,
+            due_date: due_date || null
         })
         .eq('id', id);
 
     if (error) {
-        showToast('Error al editar', 'error');
+        showToast('Error al actualizar', 'error');
     } else {
-        showToast('Tarea actualizada', 'success');
+        showToast('Tarea actualizada correctamente', 'success');
+        closeEditModal();
     }
-}
+});
 
-// Stats & Progress
+// Avatar Management
 function updateStats() {
     const total = tasks.length;
     const completed = tasks.filter(t => t.completed).length;
