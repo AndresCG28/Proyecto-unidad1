@@ -1,4 +1,4 @@
-# Remindify - Gestión de Tareas en la Nube
+# Tareas - Gestión de Tareas en la Nube
 
 Una aplicación web moderna y responsiva para la gestión de tareas, sincronizada en tiempo real con Supabase.
 
@@ -42,6 +42,21 @@ cd <nombre-de-la-carpeta>
 
 ### 3. Ejecutar
 Dado que no usa Node.js, puedes simplemente abrir `index.html` en tu navegador o usar una extensión como "Live Server" en VS Code.
+
+## 📱 Cómo abrir en tu Móvil
+
+Existen dos formas principales de ver tu aplicación en un teléfono:
+
+### Opción A: Red Local (Para pruebas rápidas)
+1. Conecta tu PC y tu teléfono a la **misma red Wi-Fi**.
+2. En tu PC, usa una extensión como **Live Server** de VS Code para iniciar el proyecto.
+3. Busca la **IP Local** de tu computadora (ej: `192.168.1.10`).
+4. En el navegador de tu teléfono, entra a la dirección `http://TU_IP:5500`.
+
+### Opción B: Despliegue en la Nube (Recomendado)
+Puedes subir tus archivos a **Vercel**, **Netlify** o **GitHub Pages**. Al ser una página estática (HTML/CSS/JS), funcionará instantáneamente y tendrás un enlace que podrás abrir desde cualquier lugar del mundo.
+
+---
 
 ## 🤖 Automatización de Commits
 

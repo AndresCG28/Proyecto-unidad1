@@ -362,12 +362,12 @@ function loadUserAvatar(user) {
 // Theme Management
 function toggleTheme() {
     const isLight = document.body.classList.toggle('light-theme');
-    localStorage.setItem('remindify-theme', isLight ? 'light' : 'dark');
+    localStorage.setItem('tareas-theme', isLight ? 'light' : 'dark');
     updateThemeIcon(isLight);
 }
 
 function loadTheme() {
-    const savedTheme = localStorage.getItem('remindify-theme');
+    const savedTheme = localStorage.getItem('tareas-theme');
     if (savedTheme === 'light') {
         document.body.classList.add('light-theme');
         updateThemeIcon(true);
