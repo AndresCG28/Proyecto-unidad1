@@ -93,7 +93,8 @@ select {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
     border-radius: 8px;
-    color: white;
+    color: var(--text-main);
+    /* Cambiado de white a variable */
     font-family: inherit;
     transition: all 0.3s ease;
     outline: none;
@@ -101,9 +102,10 @@ select {
 
 /* Fix para la visibilidad del dropdown */
 select option {
-    background-color: #0f172a;
-    /* Fondo muy oscuro para contraste */
-    color: white;
+    background-color: var(--card-bg);
+    /* Cambiado a variable para que se adapte al tema */
+    color: var(--text-main);
+    /* Cambiado a variable */
     padding: 12px;
 }
 
@@ -146,6 +148,7 @@ select:focus {
 .btn-primary {
     background: var(--primary);
     color: white;
+    /* Se mantiene blanco porque el fondo Indigo es oscuro en ambos temas */
 }
 
 .btn-primary:hover {
