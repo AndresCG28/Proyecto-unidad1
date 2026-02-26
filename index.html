@@ -84,11 +84,15 @@
                     <p style="color: var(--accent);">Panel de Control</p>
                 </div>
                 <div class="user-profile">
-                    <button id="theme-toggle" class="action-btn"
-                        style="color: var(--text-main); font-size: 1.2rem; margin-right: 0.5rem;"
-                        onclick="toggleTheme()">
+                    <button id="theme-toggle" class="action-btn" title="Cambiar Tema" onclick="toggleTheme()">
                         <i class="fa-solid fa-moon"></i>
                     </button>
+                    <div class="avatar-container" onclick="openAvatarModal()"
+                        style="cursor: pointer; position: relative; margin-right: 0.5rem;">
+                        <div id="user-avatar" class="avatar-circle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </div>
                     <span id="user-email-display" style="font-weight: 500;"></span>
                     <button onclick="handleLogout()" class="logout-btn">
                         <i class="fa-solid fa-power-off"></i> Salir
@@ -111,6 +115,21 @@
                 </div>
             </div>
 
+            <!-- Progress Bar -->
+            <div class="progress-container glass-morphism" style="margin-bottom: 2rem; padding: 1.2rem;">
+                <div
+                    style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-size: 0.9rem; font-weight: 500;">
+                    <span>Tu Progreso Semanal</span>
+                    <span id="progress-percent">0%</span>
+                </div>
+                <div class="progress-bar-bg"
+                    style="height: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;">
+                    <div id="progress-fill" class="progress-bar-fill"
+                        style="width: 0%; height: 100%; background: linear-gradient(to right, var(--accent), var(--primary)); transition: width 0.5s ease;">
+                    </div>
+                </div>
+            </div>
+
             <div class="tab-navigation">
                 <button class="tab-btn active" id="tab-tasks" onclick="switchTab('tasks')">
                     <i class="fa-solid fa-list-check"></i> Lista de Tareas
@@ -124,7 +143,7 @@
                 <div class="task-form-area glass-morphism" style="padding: 2rem; margin-bottom: 3rem;">
                     <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-plus-circle"></i> Nueva Tarea</h2>
                     <form id="add-task-form"
-                        style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 1rem; align-items: end;">
+                        style="display: grid; grid-template-columns: 1fr 1fr 120px 140px auto; gap: 1rem; align-items: end;">
                         <div class="form-group" style="margin-bottom: 0;">
                             <label>Título *</label>
                             <input type="text" id="task-title" required placeholder="¿Qué necesitas hacer?">
@@ -132,6 +151,15 @@
                         <div class="form-group" style="margin-bottom: 0;">
                             <label>Descripción</label>
                             <input type="text" id="task-desc" placeholder="Detalles opcionales...">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Prioridad</label>
+                            <select id="task-priority" class="glass-morphism"
+                                style="padding: 0.75rem; width: 100%; color: white; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);">
+                                <option value="Baja">Baja</option>
+                                <option value="Media" selected>Media</option>
+                                <option value="Alta">Alta</option>
+                            </select>
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
                             <label>Fecha Límite</label>
@@ -167,6 +195,30 @@
             </div>
         </div>
     </div>
+
+    <!-- Avatar Modal -->
+    <div id="avatar-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-morphism">
+            <h3>Selecciona tu Avatar</h3>
+            <div class="avatar-grid">
+                <div class="avatar-option" onclick="selectAvatar('user')"><i class="fa-solid fa-user"></i></div>
+                <div class="avatar-option" onclick="selectAvatar('user-graduate')"><i
+                        class="fa-solid fa-user-graduate"></i></div>
+                <div class="avatar-option" onclick="selectAvatar('user-ninja')"><i class="fa-solid fa-user-ninja"></i>
+                </div>
+                <div class="avatar-option" onclick="selectAvatar('user-astronaut')"><i
+                        class="fa-solid fa-user-astronaut"></i></div>
+                <div class="avatar-option" onclick="selectAvatar('user-tie')"><i class="fa-solid fa-user-tie"></i></div>
+                <div class="avatar-option" onclick="selectAvatar('robot')"><i class="fa-solid fa-robot"></i></div>
+                <div class="avatar-option" onclick="selectAvatar('cat')"><i class="fa-solid fa-cat"></i></div>
+                <div class="avatar-option" onclick="selectAvatar('ghost')"><i class="fa-solid fa-ghost"></i></div>
+            </div>
+            <button class="btn btn-primary" onclick="closeAvatarModal()" style="margin-top: 1rem;">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
 
     <script src="auth.js"></script>
     <script src="app.js"></script>

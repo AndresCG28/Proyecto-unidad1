@@ -5,6 +5,7 @@ let calendar = null;
 // Initialize Dashboard and Subscriptions
 async function initApp(user) {
     currentUser = user;
+    loadUserAvatar(user);
     await fetchTasks();
     initCalendar();
 
@@ -95,6 +96,7 @@ document.getElementById('add-task-form').addEventListener('submit', async (e) =>
     const title = document.getElementById('task-title').value;
     const description = document.getElementById('task-desc').value;
     const dueDate = document.getElementById('task-date').value;
+    const priority = document.getElementById('task-priority').value;
 
     const { error } = await supabaseClient
         .from('tasks')
@@ -102,14 +104,17 @@ document.getElementById('add-task-form').addEventListener('submit', async (e) =>
             title,
             description,
             due_date: dueDate || null,
+            priority: priority,
             user_id: currentUser.id,
             completed: false
         }]);
 
     if (error) {
-        alert('Error al crear tarea: ' + error.message);
+        showToast('Error al crear tarea: ' + error.message, 'error');
     } else {
+        showToast('¡Tarea creada con éxito!', 'success');
         e.target.reset();
+        document.getElementById('task-priority').value = 'Media';
     }
 });
 
@@ -120,7 +125,11 @@ async function toggleTask(id, completed) {
         .update({ completed: !completed })
         .eq('id', id);
 
-    if (error) alert('Error al actualizar tarea: ' + error.message);
+    if (error) {
+        showToast('Error al actualizar', 'error');
+    } else {
+        showToast(!completed ? '¡Tarea completada!' : 'Tarea pendiente', 'info');
+    }
 }
 
 // Delete Task
@@ -190,11 +199,70 @@ async function editTaskPrompt(id, oldTitle, oldDesc, oldDate) {
     if (error) alert('Error al editar tarea: ' + error.message);
 }
 
-// Stats
+// Stats & Progress
 function updateStats() {
-    document.getElementById('stats-total').textContent = tasks.length;
-    document.getElementById('stats-pending').textContent = tasks.filter(t => !t.completed).length;
-    document.getElementById('stats-completed').textContent = tasks.filter(t => t.completed).length;
+    const total = tasks.length;
+    const completed = tasks.filter(t => t.completed).length;
+    const pending = total - completed;
+
+    document.getElementById('stats-total').textContent = total;
+    document.getElementById('stats-pending').textContent = pending;
+    document.getElementById('stats-completed').textContent = completed;
+
+    // Update Progress Bar
+    const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+    const fill = document.getElementById('progress-fill');
+    const percentLabel = document.getElementById('progress-percent');
+
+    if (fill) fill.style.width = percent + '%';
+    if (percentLabel) percentLabel.textContent = percent + '%';
+}
+
+// Toast System
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type} glass-morphism`;
+
+    const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
+    toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Avatar Management
+function openAvatarModal() {
+    document.getElementById('avatar-modal').style.display = 'flex';
+}
+
+function closeAvatarModal() {
+    document.getElementById('avatar-modal').style.display = 'none';
+}
+
+async function selectAvatar(iconName) {
+    const avatarEl = document.getElementById('user-avatar');
+    avatarEl.innerHTML = `<i class="fa-solid fa-${iconName}"></i>`;
+
+    // Save to Supabase User Metadata
+    const { error } = await supabaseClient.auth.updateUser({
+        data: { avatar: iconName }
+    });
+
+    if (error) {
+        showToast('Error al guardar avatar', 'error');
+    } else {
+        showToast('Avatar actualizado', 'success');
+        closeAvatarModal();
+    }
+}
+
+function loadUserAvatar(user) {
+    const avatarIcon = user.user_metadata?.avatar || 'user';
+    document.getElementById('user-avatar').innerHTML = `<i class="fa-solid fa-${avatarIcon}"></i>`;
 }
 
 // Theme Management
@@ -223,5 +291,5 @@ function updateThemeIcon(isLight) {
 document.getElementById('task-search').addEventListener('input', renderTasks);
 document.getElementById('task-filter').addEventListener('change', renderTasks);
 
-// Load theme on startup
+// Load startup
 loadTheme();
